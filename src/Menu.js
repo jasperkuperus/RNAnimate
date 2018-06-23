@@ -44,6 +44,12 @@ export default class Menu extends React.Component<Props, State> {
           active={selected === 'block-swap'}
           onPress={() => this.handlePress('block-swap')}
         />
+
+        <MenuButton
+          text="Parallax"
+          active={selected === 'parallax'}
+          onPress={() => this.handlePress('parallax')}
+        />
       </View>
     );
   }

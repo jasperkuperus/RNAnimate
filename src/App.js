@@ -4,6 +4,7 @@ import { bind } from 'bind-decorator';
 import { LayoutAnimation, Platform, StyleSheet, View, Text, Animated, TouchableOpacity } from 'react-native';
 import AnimatedSwapBlocks from './AnimatedSwapBlocks';
 import AnimatedBarChart from './AnimatedBarChart';
+import Parallax from './Parallax';
 import Menu from './Menu';
 
 const colors = {
@@ -45,8 +46,13 @@ export default class App extends Component<Props, State> {
           {view === 'bar-chart' &&
             <AnimatedBarChart colors={colors} />
           }
+
           {view === 'block-swap' &&
             <AnimatedSwapBlocks colors={colors} />
+          }
+
+          {view === 'parallax' &&
+            <Parallax />
           }
         </View>
 
@@ -59,7 +65,5 @@ export default class App extends Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
