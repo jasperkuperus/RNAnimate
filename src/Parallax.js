@@ -1,13 +1,15 @@
 // @flow
+import _ from 'lodash';
 import * as React from 'react';
-import bcrypt from 'react-native-bcrypt';
 import bind from 'bind-decorator';
+import bcrypt from 'react-native-bcrypt';
 import { Animated, StyleSheet, ScrollView, View, TouchableOpacity, Text } from 'react-native';
 
 type Props = {};
 
 type State = {
   simulateCPUUsage: boolean,
+  showLongList: boolean,
 };
 
 const IMAGE_HEIGHT = 250;
@@ -23,6 +25,7 @@ export default class Parallax extends React.Component<Props, State> {
 
     this.state = {
       simulateCPUUsage: false,
+      showLongList: true,
     };
   }
 
@@ -43,8 +46,15 @@ export default class Parallax extends React.Component<Props, State> {
     }));
   }
 
+  @bind
+  handlePressListLengthToggle() {
+    this.setState(prevState => ({
+      showLongList: !prevState.showLongList,
+    }));
+  }
+
   render() {
-    const { simulateCPUUsage } = this.state;
+    const { simulateCPUUsage, showLongList } = this.state;
 
     return (
       <View style={styles.container}>
@@ -80,20 +90,34 @@ export default class Parallax extends React.Component<Props, State> {
           scrollEventThrottle={8}
         >
           <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={this.handlePressCPU}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this.handlePressCPU}
+              >
               <Text>
                 {(simulateCPUUsage ? 'Stop CPU usage' : 'Simulate CPU usage')}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this.handlePressListLengthToggle}
+            >
+              <Text>
+                {(showLongList ? 'Short list' : 'Long list')}
               </Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.item} />
-          <View style={styles.item} />
-          <View style={styles.item} />
-          <View style={styles.item} />
-          <View style={styles.item} />
-          <View style={styles.item} />
-          <View style={styles.item} />
+
+          {showLongList &&
+            <React.Fragment>
+              {_.range(25).map(key => (
+                <View key={key} style={styles.item} />
+              ))}
+            </React.Fragment>
+          }
         </Animated.ScrollView>
       </View>
     );
@@ -123,8 +147,10 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: 10,
+  },
+  button: {
+    marginVertical: 10,
   },
   item: {
     height: 100,
