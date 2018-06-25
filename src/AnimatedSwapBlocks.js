@@ -42,7 +42,6 @@ export default class AnimatedSwapBlocks extends React.Component<Props, State> {
   render() {
     const { colors } = this.props;
     const { blocks } = this.state;
-    console.log(colors, blocks)
 
     return (
       <View style={styles.container}>

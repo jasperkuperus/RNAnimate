@@ -1,6 +1,8 @@
 // @flow
 import * as React from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import {
+  Dimensions, StyleSheet, ScrollView, View, TouchableOpacity, Text,
+} from 'react-native';
 import MenuButton from './MenuButton';
 
 type Props = {
@@ -12,6 +14,9 @@ type State = {
 };
 
 export default class Menu extends React.Component<Props, State> {
+  scrollView: ScrollView;
+  scrollViewWidth: number;
+
   constructor(props: Props) {
     super(props);
 
@@ -20,10 +25,18 @@ export default class Menu extends React.Component<Props, State> {
     };
   }
 
-  handlePress(newState: string) {
+  handlePress(newState: string, buttonRef: Object) {
     this.setState({
       selected: newState,
     });
+
+    const { width } = Dimensions.get('window');
+    buttonRef.measure((buttonX, y, buttonWidth) => {
+      const max = this.scrollViewWidth - width;
+      const position = (-1 * (width / 2)) + (buttonWidth / 2) + buttonX;
+      const x = Math.min(Math.max(0, position), max);
+      this.scrollView.scrollTo({ x });
+    })
 
     this.props.onStateChange(newState);
   }
@@ -32,43 +45,60 @@ export default class Menu extends React.Component<Props, State> {
     const { selected } = this.state;
 
     return (
-      <View style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        ref={(element) => this.scrollView = element}
+        onContentSizeChange={(width) => this.scrollViewWidth = width}
+        horizontal={true}
+      >
         <MenuButton
           text="Bar Chart"
           active={selected === 'bar-chart'}
-          onPress={() => this.handlePress('bar-chart')}
+          onPress={(buttonRef) => this.handlePress('bar-chart', buttonRef)}
         />
 
         <MenuButton
           text="Block Swap"
           active={selected === 'block-swap'}
-          onPress={() => this.handlePress('block-swap')}
+          onPress={(buttonRef) => this.handlePress('block-swap', buttonRef)}
         />
 
         <MenuButton
           text="Parallax"
           active={selected === 'parallax'}
-          onPress={() => this.handlePress('parallax')}
+          onPress={(buttonRef) => this.handlePress('parallax', buttonRef)}
         />
 
         <MenuButton
           text="Parallax 2"
           active={selected === 'parallax-2'}
+          onPress={(buttonRef) => this.handlePress('parallax-2', buttonRef)}
+          />
+
+        <MenuButton
+          text="Dummy"
+          active={selected === 'bar-chart'}
+          onPress={(buttonRef) => this.handlePress('bar-chart', buttonRef)}
+          />
+
+        <MenuButton
+          text="Dummy 2"
+          active={selected === 'parallax-2'}
           last={true}
-          onPress={() => this.handlePress('parallax-2')}
+          onPress={(buttonRef) => this.handlePress('parallax-2', buttonRef)}
         />
-      </View>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignSelf: 'stretch',
-    justifyContent: 'space-between',
+    flexGrow: 0,
+    // flexDirection: 'row',
+    // alignSelf: 'stretch',
     paddingVertical: 15,
-    paddingHorizontal: 15,
+    // paddingHorizontal: 15,
     backgroundColor: '#efe6dd',
   },
 })

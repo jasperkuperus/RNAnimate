@@ -12,6 +12,8 @@ type Props = {
 export default function MenuButton(props: Props) {
   const { text, active, onPress, last } = props;
 
+  let buttonRef = null;
+
   const buttonStyles = [styles.button]
   if (last) {
     buttonStyles.push({
@@ -20,7 +22,11 @@ export default function MenuButton(props: Props) {
   }
 
   return (
-    <TouchableOpacity style={buttonStyles} onPress={onPress}>
+    <TouchableOpacity
+      style={buttonStyles}
+      ref={(element) => buttonRef = element}
+      onPress={() => onPress(buttonRef)}
+    >
       <Text style={[styles.text, active && styles.activeText]}>
         {text.toUpperCase()}
       </Text>
@@ -30,7 +36,7 @@ export default function MenuButton(props: Props) {
 
 const styles = StyleSheet.create({
   button: {
-    marginRight: 15,
+    paddingHorizontal: 15,
   },
   activeButton: {
   },
