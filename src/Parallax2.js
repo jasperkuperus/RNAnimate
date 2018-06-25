@@ -84,7 +84,14 @@ export default class Parallax2 extends React.Component<Props, State> {
               transform: [{
                 translateY: this.scrollAnimatedValue.interpolate({
                   inputRange: [0, IMAGE_HEIGHT],
-                  outputRange: [0, 15],
+                  outputRange: [0, 40],
+                  extrapolateLeft: 'clamp',
+                  extrapolateRight: 'clamp',
+                }),
+              }, {
+                scale: this.scrollAnimatedValue.interpolate({
+                  inputRange: [0, IMAGE_HEIGHT],
+                  outputRange: [1, 0],
                   extrapolateLeft: 'clamp',
                   extrapolateRight: 'clamp',
                 }),
@@ -124,6 +131,13 @@ export default class Parallax2 extends React.Component<Props, State> {
                 translateY: this.scrollAnimatedValue.interpolate({
                   inputRange: [0, IMAGE_HEIGHT],
                   outputRange: [0, 15],
+                  extrapolateLeft: 'clamp',
+                  extrapolateRight: 'clamp',
+                }),
+              }, {
+                scale: this.scrollAnimatedValue.interpolate({
+                  inputRange: [0, IMAGE_HEIGHT],
+                  outputRange: [1, 0],
                   extrapolateLeft: 'clamp',
                   extrapolateRight: 'clamp',
                 }),
