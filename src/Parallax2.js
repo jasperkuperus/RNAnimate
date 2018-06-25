@@ -94,8 +94,8 @@ export default class Parallax2 extends React.Component<Props, State> {
             style={[styles.headerTitle, {
               transform: [{
                 scale: this.scrollAnimatedValue.interpolate({
-                  inputRange: [-50, 0, IMAGE_HEIGHT],
-                  outputRange: [1.15, 1.0, 0.6],
+                  inputRange: [0, IMAGE_HEIGHT],
+                  outputRange: [1.0, 0.6],
                   extrapolateLeft: 'clamp',
                   extrapolateRight: 'clamp',
                 }),

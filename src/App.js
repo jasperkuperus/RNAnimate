@@ -27,7 +27,7 @@ export default class App extends Component<Props, State> {
     super(props);
 
     this.state = {
-      view: 'parallax-2',
+      view: 'bar-chart',
     };
   }
 
