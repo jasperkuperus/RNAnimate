@@ -5,14 +5,22 @@ import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 type Props = {
   text: string,
   active: boolean,
+  last?: boolean,
   onPress: Function,
 };
 
 export default function MenuButton(props: Props) {
-  const { text, active, onPress } = props;
+  const { text, active, onPress, last } = props;
+
+  const buttonStyles = [styles.button]
+  if (last) {
+    buttonStyles.push({
+      marginRight: 0,
+    });
+  }
 
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity style={buttonStyles} onPress={onPress}>
       <Text style={[styles.text, active && styles.activeText]}>
         {text.toUpperCase()}
       </Text>

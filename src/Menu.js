@@ -50,6 +50,13 @@ export default class Menu extends React.Component<Props, State> {
           active={selected === 'parallax'}
           onPress={() => this.handlePress('parallax')}
         />
+
+        <MenuButton
+          text="Parallax 2"
+          active={selected === 'parallax-2'}
+          last={true}
+          onPress={() => this.handlePress('parallax-2')}
+        />
       </View>
     );
   }
@@ -59,6 +66,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignSelf: 'stretch',
+    justifyContent: 'space-between',
     paddingVertical: 15,
     paddingHorizontal: 15,
     backgroundColor: '#efe6dd',

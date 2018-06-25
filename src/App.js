@@ -5,6 +5,7 @@ import { LayoutAnimation, Platform, StyleSheet, View, Text, Animated, TouchableO
 import AnimatedSwapBlocks from './AnimatedSwapBlocks';
 import AnimatedBarChart from './AnimatedBarChart';
 import Parallax from './Parallax';
+import Parallax2 from './Parallax2';
 import Menu from './Menu';
 
 const colors = {
@@ -26,7 +27,7 @@ export default class App extends Component<Props, State> {
     super(props);
 
     this.state = {
-      view: 'bar-chart',
+      view: 'parallax-2',
     };
   }
 
@@ -53,6 +54,10 @@ export default class App extends Component<Props, State> {
 
           {view === 'parallax' &&
             <Parallax />
+          }
+
+          {view === 'parallax-2' &&
+            <Parallax2 />
           }
         </View>
 
