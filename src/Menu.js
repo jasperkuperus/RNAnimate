@@ -38,7 +38,9 @@ export default class Menu extends React.Component<Props, State> {
       this.scrollView.scrollTo({ x });
     })
 
-    this.props.onStateChange(newState);
+    if (this.props.onStateChange) {
+      this.props.onStateChange(newState);
+    }
   }
 
   render() {
@@ -47,6 +49,7 @@ export default class Menu extends React.Component<Props, State> {
     return (
       <ScrollView
         style={styles.container}
+        contentContainerStyle={styles.contentContainer}
         ref={(element) => this.scrollView = element}
         onContentSizeChange={(width) => this.scrollViewWidth = width}
         horizontal={true}
@@ -76,16 +79,16 @@ export default class Menu extends React.Component<Props, State> {
           />
 
         <MenuButton
-          text="Dummy"
-          active={selected === 'bar-chart'}
-          onPress={(buttonRef) => this.handlePress('bar-chart', buttonRef)}
+          text="Noodles"
+          active={selected === 'dummy-1'}
+          onPress={(buttonRef) => this.handlePress('dummy-1', buttonRef)}
           />
 
         <MenuButton
-          text="Dummy 2"
-          active={selected === 'parallax-2'}
+          text="Drinks"
+          active={selected === 'dummy-2'}
           last={true}
-          onPress={(buttonRef) => this.handlePress('parallax-2', buttonRef)}
+          onPress={(buttonRef) => this.handlePress('dummy-2', buttonRef)}
         />
       </ScrollView>
     );
@@ -94,11 +97,11 @@ export default class Menu extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
   container: {
+    height: 40,
     flexGrow: 0,
-    // flexDirection: 'row',
-    // alignSelf: 'stretch',
-    paddingVertical: 15,
-    // paddingHorizontal: 15,
     backgroundColor: '#efe6dd',
+  },
+  contentContainer: {
+    alignItems: 'center',
   },
 })

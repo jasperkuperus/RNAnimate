@@ -3,7 +3,10 @@ import _ from 'lodash';
 import * as React from 'react';
 import bind from 'bind-decorator';
 import bcrypt from 'react-native-bcrypt';
-import { Animated, StyleSheet, ScrollView, View, TouchableOpacity, Text } from 'react-native';
+import {
+  Animated, StyleSheet, ScrollView, View, TouchableOpacity, Text,
+} from 'react-native';
+import Menu from './Menu';
 
 type Props = {};
 
@@ -158,13 +161,7 @@ export default class Parallax2 extends React.Component<Props, State> {
             }}
             />
 
-          <View style={styles.menu}>
-            <Text style={styles.category}>DRINKS</Text>
-            <Text style={styles.category}>SPECIALS</Text>
-            <Text style={styles.category}>SANDWICHES</Text>
-            <Text style={styles.category}>CURRY</Text>
-            <Text style={styles.category}>RAMEN</Text>
-          </View>
+            <Menu />
         </Animated.View>
 
         <Animated.ScrollView
@@ -260,20 +257,6 @@ const styles = StyleSheet.create({
   },
   image: {
     height: IMAGE_HEIGHT,
-  },
-  menu: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: MENU_HEIGHT,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: '#efe6dd',
-  },
-  category: {
-    fontSize: 12,
   },
   buttonContainer: {
     alignItems: 'center',

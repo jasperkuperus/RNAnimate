@@ -44,7 +44,7 @@ export default class App extends Component<Props, State> {
     return (
       <View style={styles.container}>
         <View style={styles.container}>
-          {view === 'bar-chart' &&
+          {(view === 'bar-chart' || view.indexOf('dummy') === 0) &&
             <AnimatedBarChart colors={colors} />
           }
 
