@@ -6,6 +6,7 @@ import AnimatedSwapBlocks from './AnimatedSwapBlocks';
 import AnimatedBarChart from './AnimatedBarChart';
 import Parallax from './Parallax';
 import Parallax2 from './Parallax2';
+import Swipeout from './Swipeout';
 import Menu from './Menu';
 
 const colors = {
@@ -15,6 +16,17 @@ const colors = {
   yellow: '#f3dfa2',
   grey: '#efe6dd',
 };
+
+const names = [
+  'Jody Britain', 'Nestor Riegel', 'Huey Tardugno', 'Ivana Massingill',
+  'Dollie Rappaport', 'Babette Kall', 'Leonila Wellman', 'Clifton Sturm',
+  'Lorelei Greenley', 'Livia Arriaga', 'Jamar Whitfield', 'Rosina Seegmiller',
+  'Rosemarie Mcninch', 'Dorene Mcbroom', 'Belia Gillmore', 'Evelina Jeremiah',
+  'Ruthe Desjardins', 'Titus Bomberger', 'Epifania Leffew', 'Chanel Curro',
+  'Neida Stracener', 'Elenor Wasser', 'Juli Kimbro', 'Carmelina Chism',
+  'Dianne Vaughan', 'Jacqueline Antonelli', 'Billi Zakrzewski',
+  'Lakiesha Latimer', 'Tiffanie Babst', 'Loria Desanto'
+];
 
 type Props = {};
 
@@ -58,6 +70,10 @@ export default class App extends Component<Props, State> {
 
           {view === 'parallax-2' &&
             <Parallax2 />
+          }
+
+          {view === 'swipeout' &&
+            <Swipeout names={names} />
           }
         </View>
 

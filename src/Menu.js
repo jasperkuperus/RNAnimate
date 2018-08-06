@@ -79,9 +79,9 @@ export default class Menu extends React.Component<Props, State> {
           />
 
         <MenuButton
-          text="Noodles"
-          active={selected === 'dummy-1'}
-          onPress={(buttonRef) => this.handlePress('dummy-1', buttonRef)}
+          text="Swipeout"
+          active={selected === 'swipeout'}
+          onPress={(buttonRef) => this.handlePress('swipeout', buttonRef)}
           />
 
         <MenuButton
