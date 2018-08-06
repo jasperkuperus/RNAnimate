@@ -6,7 +6,7 @@ import {
 import MenuButton from './MenuButton';
 
 type Props = {
-  onStateChange: Function,
+  onStateChange?: Function,
 };
 
 type State = {
