@@ -78,11 +78,13 @@ export default class SwipeoutRow extends React.Component<Props, State> {
       Animated.timing(this.panXAnimatedValue, {
         toValue: 75,
         duration: 250,
+        useNativeDriver: true,
       }).start();
     } else {
       Animated.timing(this.panXAnimatedValue, {
         toValue: -75,
         duration: 250,
+        useNativeDriver: true,
       }).start();
     }
 
