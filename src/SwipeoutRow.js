@@ -13,16 +13,25 @@ type Props = {
 };
 
 type State = {
+  isOpen: boolean,
 };
 
 export default class SwipeoutRow extends React.Component<Props, State> {
   panXAnimatedValue: Animated.Value = new Animated.Value(0);
 
   panResponder: PanResponder = PanResponder.create({
-    onStartShouldSetPanResponder: (evt, gestureState) => true,
-    onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-    onMoveShouldSetPanResponder: (evt, gestureState) => true,
-    onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+    onStartShouldSetPanResponder: (evt, gestureState) => {
+      return false;
+    },
+    onStartShouldSetPanResponderCapture: (evt, gestureState) => {
+      return false;
+    },
+    onMoveShouldSetPanResponder: (evt, gestureState) => {
+      return Math.abs(gestureState.dx) > 4;
+    },
+    onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+      return Math.abs(gestureState.dx) > 4;
+    },
 
     onPanResponderGrant: (evt, gestureState) => {
       // The gesture has started. Show visual feedback so the user knows
@@ -36,10 +45,12 @@ export default class SwipeoutRow extends React.Component<Props, State> {
     ]),
     onPanResponderTerminationRequest: (evt, gestureState) => true,
     onPanResponderRelease: (evt, gestureState) => {
+      this.finishAnimation();
       // The user has released all touches while this view is the
       // responder. This typically means a gesture has succeeded
     },
     onPanResponderTerminate: (evt, gestureState) => {
+      this.finishAnimation();
       // Another component has become the responder, so this gesture
       // should be cancelled
     },
@@ -53,26 +64,60 @@ export default class SwipeoutRow extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.panXAnimatedValue.addListener((event) => {
-      console.log('Hi', event);
-    });
+    this.state = {
+      isOpen: false,
+    };
+
+    // this.panXAnimatedValue.addListener((event) => {
+    //   console.log('Hi', this.state.isOpen, event);
+    // });
+  }
+
+  finishAnimation() {
+    if (this.state.isOpen) {
+      Animated.timing(this.panXAnimatedValue, {
+        toValue: 75,
+        duration: 250,
+      }).start();
+    } else {
+      Animated.timing(this.panXAnimatedValue, {
+        toValue: -75,
+        duration: 250,
+      }).start();
+    }
+
+    setTimeout(() => {
+      this.setState((prevState) => ({
+        isOpen: !prevState.isOpen,
+      }));
+    }, 250);
   }
 
   render() {
     const { person } = this.props;
+    const { isOpen } = this.state;
 
     return (
       <View key={person.id}>
         <Animated.View
           {...this.panResponder.panHandlers}
-          style={[styles.rowButtonContainer, {
+          style={[styles.rowButtonContainer, !isOpen && {
             transform: [{
               translateX: this.panXAnimatedValue.interpolate({
                 inputRange: [-75, 0],
                 outputRange: [-75, 0],
+                extrapolateLeft: 'clamp',
                 extrapolateRight: 'clamp',
+              })
+            }],
+          }, isOpen && {
+            transform: [{
+              translateX: this.panXAnimatedValue.interpolate({
+                inputRange: [0, 75],
+                outputRange: [-75, 0],
+                extrapolateLeft: 'clamp',
                 extrapolateRight: 'clamp',
-              }),
+              })
             }],
           }]}
         >
