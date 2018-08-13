@@ -2,21 +2,22 @@
 import * as React from 'react';
 import { StyleSheet, View, FlatList, Text } from 'react-native';
 import SwipeoutRow from './SwipeoutRow';
+import type { Person } from './App';
 
 type Props = {
   names: string[],
 };
 
 type State = {
-  people: {
-    id: number,
-    name: string,
-  }[],
+  people: Person[],
 };
 
 export default class Swipeout extends React.Component<Props, State> {
+  flatListElement: ?FlatList<Person> = null;
+
   constructor(props: Props) {
     super(props);
+
 
     this.state = {
       people: props.names.map((name, index) => ({
@@ -36,9 +37,12 @@ export default class Swipeout extends React.Component<Props, State> {
         </View>
 
         <FlatList
+          ref={(element) => this.flatListElement = element}
           data={people}
           keyExtractor={(item) => `${item.id}`}
-          renderItem={({ item }) => <SwipeoutRow person={item} />}
+          renderItem={({ item }) => (
+            <SwipeoutRow person={item} scrollView={this.flatListElement} />
+          )}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
       </View>

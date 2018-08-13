@@ -1,15 +1,14 @@
 // @flow
 import * as React from 'react';
 import {
-  StyleSheet, Animated, View, PanResponder, TouchableOpacity, Image, Text,
+  StyleSheet, ScrollView, Animated, View, PanResponder, TouchableOpacity, Image, Text,
 } from 'react-native';
 import trashImage from '../assets/images/trash.png';
+import type { Person } from './App';
 
 type Props = {
-  person: {
-    id: number,
-    name: string,
-  },
+  person: Person,
+  scrollView: ?ScrollView,
 };
 
 type State = {
@@ -27,10 +26,12 @@ export default class SwipeoutRow extends React.Component<Props, State> {
       return false;
     },
     onMoveShouldSetPanResponder: (evt, gestureState) => {
-      return Math.abs(gestureState.dx) > 4;
+      return this.state.isOpen && gestureState.dx > 4
+        || !this.state.isOpen && gestureState.dx < -4;
     },
     onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
-      return Math.abs(gestureState.dx) > 4;
+      return this.state.isOpen && gestureState.dx > 4
+        || !this.state.isOpen && gestureState.dx < -4;
     },
 
     onPanResponderGrant: (evt, gestureState) => {
@@ -38,6 +39,11 @@ export default class SwipeoutRow extends React.Component<Props, State> {
       // what is happening!
 
       // gestureState.d{x,y} will be set to zero now
+
+      // Temporarily disable scrolling in the scroll view while we handle the gesture
+      if (this.props.scrollView) {
+        this.props.scrollView.setNativeProps({ scrollEnabled: false });
+      }
     },
     onPanResponderMove: Animated.event([
       null, // Ignore raw event argument
@@ -45,12 +51,17 @@ export default class SwipeoutRow extends React.Component<Props, State> {
     ]),
     onPanResponderTerminationRequest: (evt, gestureState) => true,
     onPanResponderRelease: (evt, gestureState) => {
-      this.finishAnimation();
+      // Allow the scrollview to scroll again
+      if (this.props.scrollView) {
+        this.props.scrollView.setNativeProps({ scrollEnabled: true });
+      }
+
+      this.finishAnimation(gestureState);
       // The user has released all touches while this view is the
       // responder. This typically means a gesture has succeeded
     },
     onPanResponderTerminate: (evt, gestureState) => {
-      this.finishAnimation();
+      this.finishAnimation(gestureState);
       // Another component has become the responder, so this gesture
       // should be cancelled
     },
@@ -73,26 +84,31 @@ export default class SwipeoutRow extends React.Component<Props, State> {
     // });
   }
 
-  finishAnimation() {
-    if (this.state.isOpen) {
+  finishAnimation(gestureState: any) {
+    const { isOpen } = this.state;
+    const { dx } = gestureState;
+
+    if ((isOpen && dx > 15) || (!isOpen && dx >= -15)) {
       Animated.timing(this.panXAnimatedValue, {
         toValue: 75,
         duration: 250,
         useNativeDriver: true,
       }).start();
-    } else {
+
+      setTimeout(() => {
+        this.setState({ isOpen: false });
+      }, 250);
+    } else if ((!isOpen && dx < -15) || (isOpen && dx <= 15)) {
       Animated.timing(this.panXAnimatedValue, {
         toValue: -75,
         duration: 250,
         useNativeDriver: true,
       }).start();
-    }
 
-    setTimeout(() => {
-      this.setState((prevState) => ({
-        isOpen: !prevState.isOpen,
-      }));
-    }, 250);
+      setTimeout(() => {
+        this.setState({ isOpen: true });
+      }, 250);
+    }
   }
 
   render() {
@@ -123,7 +139,7 @@ export default class SwipeoutRow extends React.Component<Props, State> {
             }],
           }]}
         >
-          <TouchableOpacity style={styles.rowButton}>
+          <TouchableOpacity style={styles.rowButton} onPress={() => console.log('Press!')}>
             <Text>{person.name}</Text>
           </TouchableOpacity>
         </Animated.View>

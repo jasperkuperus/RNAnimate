@@ -9,6 +9,11 @@ import Parallax2 from './Parallax2';
 import Swipeout from './Swipeout';
 import Menu from './Menu';
 
+export type Person = {
+  id: number,
+  name: string,
+};
+
 const colors = {
   black: '#231f20',
   red: '#bb4430',
