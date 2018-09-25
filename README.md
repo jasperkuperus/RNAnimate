@@ -10,6 +10,14 @@ yarn start
 yarn ios
 ```
 
+Or on Android, run these commands in stead of `yarn ios`:
+
+```bash
+adb devices # Make sure your Android device is connected
+adb reverse tcp:8081 tcp:8081
+yarn android
+```
+
 ## TODO
 
 - Have a look at https://github.com/wix/react-native-interactable
